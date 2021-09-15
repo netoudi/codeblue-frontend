@@ -2,12 +2,15 @@
   "extends": [
     "next/core-web-vitals",
     "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended"
   ],
   "plugins": [
     "eslint-plugin-import-helpers"
   ],
   "rules": {
+    "@typescript-eslint/explicit-module-boundary-types": "off",
     "import-helpers/order-imports": [
       "warn",
       {
