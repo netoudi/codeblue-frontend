@@ -1,4 +1,5 @@
 import { GetServerSideProps, NextPage } from 'next';
+import { useRouter } from 'next/router';
 
 import {
   Column,
@@ -16,7 +17,8 @@ import {
   TableHeaderRow,
   Toolbar,
 } from '@devexpress/dx-react-grid-material-ui';
-import { Container, Typography } from '@material-ui/core';
+import { Button, Container, Typography } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 import { format, parseISO } from 'date-fns';
 
 import { Token, validateAuth } from 'utils/auth';
@@ -57,11 +59,22 @@ export type TransactionsPageProps = {
 };
 
 const TransactionsPage: NextPage<TransactionsPageProps> = (props) => {
+  const router = useRouter();
+
   return (
     <Container>
       <Typography component="h1" variant="h4">
         My transactions
       </Typography>
+
+      <Button
+        startIcon={<AddIcon />}
+        variant="contained"
+        color="primary"
+        onClick={() => router.push('/transactions/new')}
+      >
+        Add
+      </Button>
 
       <Grid rows={props.transactions} columns={columns}>
         <Table />
