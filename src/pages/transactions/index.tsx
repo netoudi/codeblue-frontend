@@ -22,7 +22,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { format, parseISO } from 'date-fns';
 
 import { Token, validateAuth } from 'utils/auth';
-import http from 'utils/http';
+import makeHttp from 'utils/http';
 import { Transaction } from 'utils/models';
 
 const columns: Column[] = [
@@ -110,11 +110,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const token = (auth as Token).token;
 
-  const { data: transactions } = await http.get('/transactions', {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const { data: transactions } = await makeHttp(token).get('/transactions');
 
   return {
     props: {

@@ -1,4 +1,7 @@
+import { useForm } from 'react-hook-form';
+
 import { NextPage } from 'next';
+import { useRouter } from 'next/router';
 
 import {
   Box,
@@ -10,19 +13,33 @@ import {
   Typography,
 } from '@material-ui/core';
 
+import makeHttp from 'utils/http';
 import { TransactionCategoryLabels, TransactionTypeLabels } from 'utils/models';
 
 const TransactionsNewPage: NextPage = () => {
+  const router = useRouter();
+  const { register, handleSubmit } = useForm();
+
+  async function onSubmit(data: any) {
+    try {
+      await makeHttp().post('/transactions', data);
+      router.push('/transactions');
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   return (
     <Container>
       <Typography component="h1" variant="h4">
         New transaction
       </Typography>
 
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container>
           <Grid item xs={12} md={6}>
             <TextField
+              {...register('payment_date')}
               type="date"
               required
               label="Payment date"
@@ -30,21 +47,45 @@ const TransactionsNewPage: NextPage = () => {
               InputLabelProps={{ shrink: true }}
             />
             <TextField
+              {...register('name')}
               required
               label="Name"
               fullWidth
               inputProps={{ maxLength: 255 }}
             />
-            <TextField required label="Description" fullWidth />
-            <TextField select required label="Category" fullWidth>
+            <TextField
+              {...register('description')}
+              required
+              label="Description"
+              fullWidth
+            />
+            <TextField
+              {...register('category')}
+              select
+              required
+              label="Category"
+              fullWidth
+            >
               {TransactionCategoryLabels.map((i, key) => (
                 <MenuItem key={key} value={i.value}>
                   {i.label}
                 </MenuItem>
               ))}
             </TextField>
-            <TextField type="number" required label="Value" fullWidth />
-            <TextField select required label="Payment type" fullWidth>
+            <TextField
+              {...register('amount', { valueAsNumber: true })}
+              type="number"
+              required
+              label="Amount"
+              fullWidth
+            />
+            <TextField
+              {...register('type')}
+              select
+              required
+              label="Payment type"
+              fullWidth
+            >
               {TransactionTypeLabels.map((i, key) => (
                 <MenuItem key={key} value={i.value}>
                   {i.label}
