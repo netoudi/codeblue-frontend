@@ -17,6 +17,7 @@
     "@react-keycloak/ssr": "^3.3.0",
     "axios": "^0.21.4",
     "cookie": "^0.4.1",
+    "date-fns": "^2.24.0",
     "js-cookie": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
     "keycloak-js": "^15.0.2",

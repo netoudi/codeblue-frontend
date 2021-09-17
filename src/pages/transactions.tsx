@@ -17,6 +17,7 @@ import {
   Toolbar,
 } from '@devexpress/dx-react-grid-material-ui';
 import { Container, Typography } from '@material-ui/core';
+import { format, parseISO } from 'date-fns';
 
 import { Token, validateAuth } from 'utils/auth';
 import http from 'utils/http';
@@ -26,6 +27,9 @@ const columns: Column[] = [
   {
     name: 'payment_date',
     title: 'Payment date',
+    getCellValue: (row: any, columnName: string) => {
+      return format(parseISO(row[columnName].slice(0, 10)), 'MM/dd/yyyy');
+    },
   },
   {
     name: 'name',
@@ -42,6 +46,9 @@ const columns: Column[] = [
   {
     name: 'created_at',
     title: 'Created At',
+    getCellValue: (row: any, columnName: string) => {
+      return format(parseISO(row[columnName].slice(0, 10)), 'MM/dd/yyyy');
+    },
   },
 ];
 
