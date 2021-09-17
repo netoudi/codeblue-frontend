@@ -1,4 +1,4 @@
-import { NextPage } from 'next';
+import { GetServerSideProps, NextPage } from 'next';
 
 import {
   Column,
@@ -17,6 +17,10 @@ import {
   Toolbar,
 } from '@devexpress/dx-react-grid-material-ui';
 import { Container, Typography } from '@material-ui/core';
+
+import { Token, validateAuth } from 'utils/auth';
+import http from 'utils/http';
+import { Transaction } from 'utils/models';
 
 const columns: Column[] = [
   {
@@ -41,14 +45,18 @@ const columns: Column[] = [
   },
 ];
 
-const TransactionsPage: NextPage = () => {
+export type TransactionsPageProps = {
+  transactions: Transaction[];
+};
+
+const TransactionsPage: NextPage<TransactionsPageProps> = (props) => {
   return (
     <Container>
       <Typography component="h1" variant="h4">
         My transactions
       </Typography>
 
-      <Grid rows={[]} columns={columns}>
+      <Grid rows={props.transactions} columns={columns}>
         <Table />
         <SortingState
           defaultSorting={[{ columnName: 'created_at', direction: 'desc' }]}
@@ -67,3 +75,30 @@ const TransactionsPage: NextPage = () => {
 };
 
 export default TransactionsPage;
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const auth = validateAuth(ctx.req);
+
+  if (!auth) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/login',
+      },
+    };
+  }
+
+  const token = (auth as Token).token;
+
+  const { data: transactions } = await http.get('/transactions', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return {
+    props: {
+      transactions,
+    },
+  };
+};
