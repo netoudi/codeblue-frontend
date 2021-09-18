@@ -23,7 +23,8 @@ import { format, parseISO } from 'date-fns';
 
 import Page from 'components/Page';
 
-import { Token, validateAuth } from 'utils/auth';
+import { withAuth } from 'hof/withAuth';
+
 import makeHttp from 'utils/http';
 import { Transaction } from 'utils/models';
 
@@ -98,25 +99,14 @@ const TransactionsPage: NextPage<TransactionsPageProps> = (props) => {
 
 export default TransactionsPage;
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const auth = validateAuth(ctx.req);
+export const getServerSideProps: GetServerSideProps = withAuth(
+  async (ctx, { token }) => {
+    const { data: transactions } = await makeHttp(token).get('/transactions');
 
-  if (!auth) {
     return {
-      redirect: {
-        permanent: false,
-        destination: '/login',
+      props: {
+        transactions,
       },
     };
   }
-
-  const token = (auth as Token).token;
-
-  const { data: transactions } = await makeHttp(token).get('/transactions');
-
-  return {
-    props: {
-      transactions,
-    },
-  };
-};
+);

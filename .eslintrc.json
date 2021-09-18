@@ -23,6 +23,7 @@
           "/^next/",
           "module",
           "/^components/",
+          "/^hof/",
           "/^hooks/",
           "/^pages/",
           "/^utils/",
