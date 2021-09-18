@@ -6,6 +6,8 @@ import { CssBaseline } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
 import { SSRCookies, SSRKeycloakProvider } from '@react-keycloak/ssr';
 
+import { TenantProvider } from 'components/Tenant';
+
 import { KEYCLOAK_PUBLIC_CONFIG } from 'utils/auth';
 import { parseCookies } from 'utils/cookies';
 
@@ -29,10 +31,12 @@ function MyApp({ Component, pageProps, cookies }: AppProps & { cookies: any }) {
             : null,
       }}
     >
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Component {...pageProps} />
-      </ThemeProvider>
+      <TenantProvider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </TenantProvider>
     </SSRKeycloakProvider>
   );
 }
