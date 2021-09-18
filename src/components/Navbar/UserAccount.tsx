@@ -9,9 +9,13 @@ import {
   MenuItem,
 } from '@material-ui/core';
 import { AccountBox } from '@material-ui/icons';
+import { useKeycloak } from '@react-keycloak/ssr';
+import { KeycloakInstance } from 'keycloak-js';
 
 const UserAccount: React.FunctionComponent = () => {
   const router = useRouter();
+
+  const { keycloak } = useKeycloak<KeycloakInstance>();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -34,7 +38,7 @@ const UserAccount: React.FunctionComponent = () => {
         transformOrigin={{ vertical: 'top', horizontal: 'center' }}
         getContentAnchorEl={null}
       >
-        <MenuItem disabled>Username</MenuItem>
+        <MenuItem disabled>{(keycloak?.idTokenParsed as any)?.name}</MenuItem>
         <Divider />
         <MenuItem
           onClick={() => {
