@@ -11,6 +11,8 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
+import { useKeycloak } from '@react-keycloak/ssr';
+import { KeycloakInstance } from 'keycloak-js';
 
 import Page from 'components/Page';
 
@@ -20,6 +22,7 @@ import { TransactionCategoryLabels, TransactionTypeLabels } from 'utils/models';
 const TransactionsNewPage: NextPage = () => {
   const router = useRouter();
   const { register, handleSubmit } = useForm();
+  const { initialized, keycloak } = useKeycloak<KeycloakInstance>();
 
   async function onSubmit(data: any) {
     try {
@@ -29,6 +32,17 @@ const TransactionsNewPage: NextPage = () => {
       console.error(e);
     }
   }
+
+  if (
+    typeof window !== 'undefined' &&
+    initialized &&
+    !keycloak?.authenticated
+  ) {
+    router.replace(`/login?from=${window.location.pathname}`);
+    return null;
+  }
+
+  if (!keycloak?.authenticated) return null;
 
   return (
     <Page>
@@ -66,6 +80,7 @@ const TransactionsNewPage: NextPage = () => {
               required
               label="Category"
               fullWidth
+              defaultValue=""
             >
               {TransactionCategoryLabels.map((i, key) => (
                 <MenuItem key={key} value={i.value}>
@@ -86,6 +101,7 @@ const TransactionsNewPage: NextPage = () => {
               required
               label="Payment type"
               fullWidth
+              defaultValue=""
             >
               {TransactionTypeLabels.map((i, key) => (
                 <MenuItem key={key} value={i.value}>
