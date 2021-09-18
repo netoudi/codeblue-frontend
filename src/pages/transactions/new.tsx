@@ -6,12 +6,13 @@ import { useRouter } from 'next/router';
 import {
   Box,
   Button,
-  Container,
   Grid,
   MenuItem,
   TextField,
   Typography,
 } from '@material-ui/core';
+
+import Page from 'components/Page';
 
 import makeHttp from 'utils/http';
 import { TransactionCategoryLabels, TransactionTypeLabels } from 'utils/models';
@@ -30,7 +31,7 @@ const TransactionsNewPage: NextPage = () => {
   }
 
   return (
-    <Container>
+    <Page>
       <Typography component="h1" variant="h4">
         New transaction
       </Typography>
@@ -105,7 +106,7 @@ const TransactionsNewPage: NextPage = () => {
           </Grid>
         </Grid>
       </form>
-    </Container>
+    </Page>
   );
 };
 
