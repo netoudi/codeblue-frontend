@@ -21,6 +21,7 @@ import { Button, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { format, parseISO } from 'date-fns';
 
+import Head from 'components/Head';
 import Page from 'components/Page';
 
 import { withAuth } from 'hof/withAuth';
@@ -66,6 +67,8 @@ const TransactionsPage: NextPage<TransactionsPageProps> = (props) => {
 
   return (
     <Page>
+      <Head title="My transactions" />
+
       <Typography component="h1" variant="h4">
         My transactions
       </Typography>

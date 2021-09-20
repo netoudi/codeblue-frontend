@@ -7,6 +7,7 @@ import { Box, Button, Grid, TextField, Typography } from '@material-ui/core';
 import { useKeycloak } from '@react-keycloak/ssr';
 import { KeycloakInstance } from 'keycloak-js';
 
+import Head from 'components/Head';
 import Page from 'components/Page';
 
 import makeHttp from 'utils/http';
@@ -38,6 +39,8 @@ const ReportsNewPage: NextPage = () => {
 
   return (
     <Page>
+      <Head title="New report" />
+
       <Typography component="h1" variant="h4">
         New report
       </Typography>
