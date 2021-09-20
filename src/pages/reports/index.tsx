@@ -26,6 +26,8 @@ import Page from 'components/Page';
 
 import { withAuth } from 'hof/withAuth';
 
+import { useAuthSwr } from 'hooks/useAuthSwr';
+
 import makeHttp from 'utils/http';
 import { Report } from 'utils/models';
 
@@ -68,6 +70,11 @@ export type ReportsPageProps = {
 const ReportsPage: NextPage<ReportsPageProps> = (props) => {
   const router = useRouter();
 
+  const { data: reports } = useAuthSwr('reports', {
+    refreshInterval: 20_000,
+    fallbackData: props.reports,
+  });
+
   return (
     <Page>
       <Head title="My reports" />
@@ -85,7 +92,7 @@ const ReportsPage: NextPage<ReportsPageProps> = (props) => {
         Add
       </Button>
 
-      <Grid rows={props.reports} columns={columns}>
+      <Grid rows={reports} columns={columns}>
         <Table />
         <SortingState
           defaultSorting={[{ columnName: 'created_at', direction: 'desc' }]}
