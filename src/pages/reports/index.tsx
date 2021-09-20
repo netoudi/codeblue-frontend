@@ -17,7 +17,7 @@ import {
   TableHeaderRow,
   Toolbar,
 } from '@devexpress/dx-react-grid-material-ui';
-import { Button, Typography } from '@material-ui/core';
+import { Button, Link, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { format, parseISO } from 'date-fns';
 
@@ -53,6 +53,13 @@ const columns: Column[] = [
   {
     name: 'file_url',
     title: 'Download',
+    getCellValue: (row: any, columnName: string) => {
+      return row[columnName] ? (
+        <Link href={row[columnName]} rel="noreferrer" target="_blank">
+          Link
+        </Link>
+      ) : null;
+    },
   },
   {
     name: 'created_at',
