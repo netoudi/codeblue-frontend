@@ -40,6 +40,14 @@ const Menu: React.FunctionComponent = () => {
         <MenuItem
           onClick={() => {
             handleClose();
+            router.push('/transactions');
+          }}
+        >
+          Transactions
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            handleClose();
             router.push('/reports');
           }}
         >
